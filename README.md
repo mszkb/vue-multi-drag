@@ -11,7 +11,13 @@
 Vue implementation to support drag'n'drop multiple items at the same time. 
 Most of the code comes from https://www.sitepoint.com/accessible-drag-drop/
 
+See [Demo in Codesandbox](https://codesandbox.io/s/4kxw6m3x9)
+
 ## Install
+
+````npm
+npm i vue-multi-drag --save
+````
 
 main.js
 ````vue
