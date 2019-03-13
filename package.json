@@ -2,7 +2,7 @@
   "name": "vue-multi-drag",
   "description": "Vue Plugin for supporting drag and drop multiple items",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "main": "dist/vue-multi-drag.js",
   "files": [
     "dist/*.js",
@@ -10,7 +10,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/mszkb/vue-multi-drag"
   },
   "unpkg": "dist/vue-multi-drag.js",
   "keywords": [
