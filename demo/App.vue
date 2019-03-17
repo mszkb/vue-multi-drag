@@ -1,18 +1,20 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+    <Hello />
   </div>
 </template>
 
 <script>
+import Hello from "./components/Hello";
 export default {
-  name: 'app'
-}
+  name: "app",
+  components: { Hello }
+};
 </script>
 
 <style>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -20,12 +22,12 @@ export default {
   margin-top: 60px;
 }
 
-h1, h2 {
+h1,
+h2 {
   font-weight: normal;
 }
 
 a {
   color: #333;
 }
-
 </style>

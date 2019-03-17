@@ -3,41 +3,45 @@
 // https://codepen.io/SitePoint/pen/XJPjOj
 export default class multiDragBehaviour {
   constructor() {
-    this.allItems = []
+    this.allItems = [];
     this.selections = {
       items: [],
       owner: null,
       droptarget: null
-    }
+    };
 
     // Those are used for the dropeffects later on
     // @see _addDropeffects
-    this.dropZones = null
-    this.draggableItems = null
+    this.dropZones = null;
+    this.draggableItems = null;
 
     //related variable is needed to maintain a reference to the
     //dragleave's relatedTarget, since it doesn't have e.relatedTarget
-    this.related = {}
+    this.related = {};
 
-    this._attachGlobalListeners()
+    this._attachGlobalListeners();
   }
 
   _attachGlobalListeners() {
-    let _this = this
-    document.addEventListener('dragenter', function (e) {
-      _this.related = e.target
-    }, false)
+    let _this = this;
+    document.addEventListener(
+      "dragenter",
+      function(e) {
+        _this.related = e.target;
+      },
+      false
+    );
 
-    document.addEventListener('dragleave', function (e) {
-      _this._dragLeave(e)
-    })
+    document.addEventListener("dragleave", function(e) {
+      _this._dragLeave(e);
+    });
   }
 
   initItem(draggableItem) {
-    draggableItem.setAttribute('grabindex', this.allItems.length)  // this attribute keeps track of the position
+    draggableItem.setAttribute("grabindex", this.allItems.length); // this attribute keeps track of the position
     // so it is not affected by the order of selection
-    this.allItems.push(draggableItem)
-    this.attachEventListeners(draggableItem)
+    this.allItems.push(draggableItem);
+    this.attachEventListeners(draggableItem);
   }
 
   /**
@@ -47,33 +51,48 @@ export default class multiDragBehaviour {
    * @param draggableItem
    */
   attachEventListeners(draggableItem) {
-    const _this = this
+    const _this = this;
     // this.items.push(draggableItem)
 
-    draggableItem.addEventListener('mousedown', e => {
-      _this._mouseDown(e)
-    }, false)
+    draggableItem.addEventListener(
+      "mousedown",
+      e => {
+        _this._mouseDown(e);
+      },
+      false
+    );
 
-    draggableItem.addEventListener('mouseup', e => {
-      _this._mouseUp(e)
-    })
+    draggableItem.addEventListener("mouseup", e => {
+      _this._mouseUp(e);
+    });
 
-    draggableItem.addEventListener('dragstart', e => {
-      _this._dragStart(e)
-    }, false)
+    draggableItem.addEventListener(
+      "dragstart",
+      e => {
+        _this._dragStart(e);
+      },
+      false
+    );
 
-    draggableItem.addEventListener('dragover', e => {
-      //dragover event to allow the drag by preventing its default
-      if (_this.selections.items.length) {
-        e.preventDefault()
-      }
-    }, false)
+    draggableItem.addEventListener(
+      "dragover",
+      e => {
+        //dragover event to allow the drag by preventing its default
+        if (_this.selections.items.length) {
+          e.preventDefault();
+        }
+      },
+      false
+    );
 
-    draggableItem.addEventListener('dragend', e => {
-      _this._dragEnd(e)
-    }, false)
+    draggableItem.addEventListener(
+      "dragend",
+      e => {
+        _this._dragEnd(e);
+      },
+      false
+    );
   }
-
 
   /**
    * Adds the current selection to the list and adds the 'aria-grabbed' attribute
@@ -94,12 +113,15 @@ export default class multiDragBehaviour {
     else if (this.selections.owner !== item.parentNode) {
       return;
     }
-    item.setAttribute('aria-grabbed', 'true');  //set this item's grabbed state
-    this.selections.items.push(item);        //add it to the items array
-    this.selections.items.sort(function (a, b) {
-        return (a.getAttribute('grabindex') > b.getAttribute('grabindex')) ? 1 : ((b.getAttribute('grabindex') > a.getAttribute('grabindex')) ? -1 : 0);
-      }
-    );
+    item.setAttribute("aria-grabbed", "true"); //set this item's grabbed state
+    this.selections.items.push(item); //add it to the items array
+    this.selections.items.sort(function(a, b) {
+      return a.getAttribute("grabindex") > b.getAttribute("grabindex")
+        ? 1
+        : b.getAttribute("grabindex") > a.getAttribute("grabindex")
+        ? -1
+        : 0;
+    });
   }
 
   /**
@@ -110,7 +132,7 @@ export default class multiDragBehaviour {
    * @private
    */
   _removeSelection(item) {
-    item.setAttribute('aria-grabbed', 'false');
+    item.setAttribute("aria-grabbed", "false");
 
     //then find and remove this item from the existing items array
     for (let len = this.selections.items.length, i = 0; i < len; i++) {
@@ -121,7 +143,7 @@ export default class multiDragBehaviour {
     }
 
     if (this.selections.items.length === 0) {
-      this.selections.owner = null
+      this.selections.owner = null;
     }
   }
 
@@ -135,7 +157,7 @@ export default class multiDragBehaviour {
     if (this.selections.items.length) {
       //reset the grabbed state on every selected item
       for (let len = this.selections.items.length, i = 0; i < len; i++) {
-        this.selections.items[i].setAttribute('aria-grabbed', 'false');
+        this.selections.items[i].setAttribute("aria-grabbed", "false");
       }
       //then reset the items array
       this.selections.owner = null;
@@ -152,69 +174,63 @@ export default class multiDragBehaviour {
    * @private
    */
   _hasModifier(e) {
-    return (e.ctrlKey || e.metaKey || e.shiftKey)
+    return e.ctrlKey || e.metaKey || e.shiftKey;
   }
 
   _initDropZones() {
     if (this.dropZones === null) {
-      this.dropZones = document.querySelectorAll('[related]')
+      this.dropZones = document.querySelectorAll("[related]");
     }
   }
 
   _initDraggableItems() {
     if (this.draggableItems === null) {
-      this.draggableItems = document.querySelectorAll('[draggable]')
+      this.draggableItems = document.querySelectorAll("[draggable]");
     }
   }
 
   //function for applying dropeffect to the target containers
   _addDropeffects() {
-
-    this._initDropZones()
-    this._initDraggableItems()
+    this._initDropZones();
+    this._initDraggableItems();
 
     //apply aria-dropeffect and tabindex to all targets apart from the owner
     // FIXME use functional stuff
     for (let len = this.dropZones.length, i = 0; i < len; i++) {
-      if
-      (
-        this.dropZones[i] !== this.selections.owner
-        &&
-        this.dropZones[i].getAttribute('aria-dropeffect') === 'none'
+      if (
+        this.dropZones[i] !== this.selections.owner &&
+        this.dropZones[i].getAttribute("aria-dropeffect") === "none"
       ) {
-        this.dropZones[i].setAttribute('aria-dropeffect', 'move');
-        this.dropZones[i].setAttribute('tabindex', '0');
+        this.dropZones[i].setAttribute("aria-dropeffect", "move");
+        this.dropZones[i].setAttribute("tabindex", "0");
       }
     }
 
     //remove aria-grabbed and tabindex from all items inside those containers
     // FIXME use functional stuff
     for (let len = this.draggableItems.length, i = 0; i < len; i++) {
-      if
-      (
-        this.draggableItems[i].parentNode !== this.selections.owner
-        &&
-        this.draggableItems[i].getAttribute('aria-grabbed')
+      if (
+        this.draggableItems[i].parentNode !== this.selections.owner &&
+        this.draggableItems[i].getAttribute("aria-grabbed")
       ) {
-        this.draggableItems[i].removeAttribute('aria-grabbed');
-        this.draggableItems[i].removeAttribute('tabindex');
+        this.draggableItems[i].removeAttribute("aria-grabbed");
+        this.draggableItems[i].removeAttribute("tabindex");
       }
     }
   }
 
   _clearDropeffects() {
-
-    this._initDropZones()
-    this._initDraggableItems()
+    this._initDropZones();
+    this._initDraggableItems();
 
     //if we have any selected items
     if (this.selections.items.length) {
       //reset aria-dropeffect and remove tabindex from all targets
       // FIXME use functional stuff
       for (let len = this.dropZones.length, i = 0; i < len; i++) {
-        if (this.dropZones[i].getAttribute('aria-dropeffect') !== 'none') {
-          this.dropZones[i].setAttribute('aria-dropeffect', 'none');
-          this.dropZones[i].removeAttribute('tabindex');
+        if (this.dropZones[i].getAttribute("aria-dropeffect") !== "none") {
+          this.dropZones[i].setAttribute("aria-dropeffect", "none");
+          this.dropZones[i].removeAttribute("tabindex");
         }
       }
 
@@ -222,12 +238,13 @@ export default class multiDragBehaviour {
       //without changing the grabbed value of any existing selected items
       // FIXME use functional stuff
       for (let len = this.draggableItems.length, i = 0; i < len; i++) {
-        if (!this.draggableItems[i].getAttribute('aria-grabbed')) {
-          this.draggableItems[i].setAttribute('aria-grabbed', 'false');
-          this.draggableItems[i].setAttribute('tabindex', '0');
-        }
-        else if (this.draggableItems[i].getAttribute('aria-grabbed') === 'true') {
-          this.draggableItems[i].setAttribute('tabindex', '0');
+        if (!this.draggableItems[i].getAttribute("aria-grabbed")) {
+          this.draggableItems[i].setAttribute("aria-grabbed", "false");
+          this.draggableItems[i].setAttribute("tabindex", "0");
+        } else if (
+          this.draggableItems[i].getAttribute("aria-grabbed") === "true"
+        ) {
+          this.draggableItems[i].setAttribute("tabindex", "0");
         }
       }
     }
@@ -243,11 +260,10 @@ export default class multiDragBehaviour {
    */
   _getContainer(element) {
     do {
-      if (element.nodeType === 1 && element.getAttribute('aria-dropeffect')) {
+      if (element.nodeType === 1 && element.getAttribute("aria-dropeffect")) {
         return element;
       }
-    }
-    while (element = element.parentNode);
+    } while ((element = element.parentNode));
 
     return null;
   }
@@ -262,11 +278,11 @@ export default class multiDragBehaviour {
    * @private
    */
   _mouseDown(e) {
-    this._clearDropeffects();     //clear dropeffect from the target containers
+    this._clearDropeffects(); //clear dropeffect from the target containers
 
     if (this._hasModifier(e)) {
-      this._clearDropeffects();   // clear dropeffect from the target containers
-      this._clearSelections();    // clear all existing selections
+      this._clearDropeffects(); // clear dropeffect from the target containers
+      this._clearSelections(); // clear all existing selections
     }
   }
 
@@ -279,26 +295,26 @@ export default class multiDragBehaviour {
    */
   _mouseUp(e) {
     if (!this._hasModifier(e)) {
-      if (e.target.getAttribute('draggable')) {
+      if (e.target.getAttribute("draggable")) {
         // check if the item's grabbed state is currently false
-        if (e.target.getAttribute('aria-grabbed') === 'false') {
+        if (e.target.getAttribute("aria-grabbed") === "false") {
           // this._clearSelections();        //clear all existing selections
-          this._addSelection(e.target);   //then add this new selection
+          this._addSelection(e.target); //then add this new selection
         } else {
-          this._removeSelection(e.target)
+          this._removeSelection(e.target);
         }
       } else {
         // click again -> remove from selection
         // TODO remove from selection
       }
-      return
+      return;
     }
 
     //if the element is a draggable item
     //and the multipler selection modifier is pressed
-    if (e.target.getAttribute('draggable')) {
+    if (e.target.getAttribute("draggable")) {
       //if the item's grabbed state is currently true
-      if (e.target.getAttribute('aria-grabbed') === 'true') {
+      if (e.target.getAttribute("aria-grabbed") === "true") {
         //unselect this item
         this._removeSelection(e.target);
 
@@ -320,13 +336,13 @@ export default class multiDragBehaviour {
   _dragStart(e) {
     // If the clicked node is from another column, then block the drag
     if (this.selections.owner !== e.target.parentNode) {
-      this._clearSelections()
+      this._clearSelections();
       this._addSelection(e.target);
     }
 
     //[else] if the multiple selection modifier is pressed
     //and the item's grabbed state is currently false
-    if (e.target.getAttribute('aria-grabbed') === 'false') {
+    if (e.target.getAttribute("aria-grabbed") === "false") {
       //add this additional selection
       this._addSelection(e.target);
     }
@@ -335,7 +351,7 @@ export default class multiDragBehaviour {
     //otherwise the drop action won't work at all in firefox
     //most browsers support the proper mime-type syntax, eg. "text/plain"
     //but we have to use this incorrect syntax for the benefit of IE10+
-    e.dataTransfer.setData('text', '');
+    e.dataTransfer.setData("text", "");
 
     //apply dropeffect to the target containers
     this._addDropeffects();
@@ -343,18 +359,20 @@ export default class multiDragBehaviour {
 
   _keyDown(e) {
     //if the element is a grabbable item
-    if (e.target.getAttribute('aria-grabbed')) {
-      if (e.keyCode === 32) {           //Space is the selection or unselection keystroke
-        if (this._hasModifier(e)) {     //if the multiple selection modifier is pressed
+    if (e.target.getAttribute("aria-grabbed")) {
+      if (e.keyCode === 32) {
+        //Space is the selection or unselection keystroke
+        if (this._hasModifier(e)) {
+          //if the multiple selection modifier is pressed
           //if the item's grabbed state is currently true
-          if (e.target.getAttribute('aria-grabbed') === 'true') {
+          if (e.target.getAttribute("aria-grabbed") === "true") {
             //if this is the only selected item, clear dropeffect
             //from the target containers, which we must do first
             //in case subsequent unselection sets owner to null
             if (this.selections.items.length === 1) {
               this._clearDropeffects();
             }
-            this._removeSelection(e.target);      //unselect this item
+            this._removeSelection(e.target); //unselect this item
 
             //if we have any selections
             //apply dropeffect to the target containers,
@@ -370,25 +388,25 @@ export default class multiDragBehaviour {
           }
           //else [if its grabbed state is currently false]
           else {
-            this._addSelection(e.target);     //add this additional selection
-            this._addDropeffects();           //apply dropeffect to the target containers
+            this._addSelection(e.target); //add this additional selection
+            this._addDropeffects(); //apply dropeffect to the target containers
           }
         }
 
         //else [if the multiple selection modifier is not pressed]
         //and the item's grabbed state is currently false
-        else if (e.target.getAttribute('aria-grabbed') === 'false') {
-          this._clearDropeffects();           //clear dropeffect from the target containers
-          this._clearSelections();            //clear all existing selections
-          this._addSelection(e.target);       //add this new selection
-          this._addDropeffects();             //apply dropeffect to the target containers
+        else if (e.target.getAttribute("aria-grabbed") === "false") {
+          this._clearDropeffects(); //clear dropeffect from the target containers
+          this._clearSelections(); //clear all existing selections
+          this._addSelection(e.target); //add this new selection
+          this._addDropeffects(); //apply dropeffect to the target containers
         }
 
         //else [if modifier is not pressed and grabbed is already true]
         else {
-          this._addDropeffects();             //apply dropeffect to the target containers
+          this._addDropeffects(); //apply dropeffect to the target containers
         }
-        e.preventDefault();                   //then prevent default to avoid any conflict with native actions
+        e.preventDefault(); //then prevent default to avoid any conflict with native actions
       }
 
       //Modifier + M is the end-of-selection keystroke
@@ -400,7 +418,9 @@ export default class multiDragBehaviour {
           this._addDropeffects();
 
           //if the owner container is the last one, focus the first one
-          if (this.selections.owner === this.dropZones[this.dropZones.length - 1]) {
+          if (
+            this.selections.owner === this.dropZones[this.dropZones.length - 1]
+          ) {
             this.dropZones[0].focus();
           }
 
@@ -440,8 +460,8 @@ export default class multiDragBehaviour {
   }
 
   _dragLeave(e) {
-    this._initDropZones()
-    this._initDraggableItems()
+    this._initDropZones();
+    this._initDraggableItems();
 
     //get a drop target reference from the relatedTarget
     let droptarget = this._getContainer(this.related);
@@ -456,13 +476,15 @@ export default class multiDragBehaviour {
     if (droptarget !== this.selections.droptarget) {
       //if we have a saved reference, clear its existing dragover class
       if (this.selections.droptarget) {
-        this.selections.droptarget.className =
-          this.selections.droptarget.className.replace(/ dragover/g, '');
+        this.selections.droptarget.className = this.selections.droptarget.className.replace(
+          / dragover/g,
+          ""
+        );
       }
 
       //apply the dragover class to the new drop target reference
       if (droptarget) {
-        droptarget.className += ' dragover';
+        droptarget.className += " dragover";
       }
 
       //then save that reference for next time
@@ -471,17 +493,17 @@ export default class multiDragBehaviour {
   }
 
   _startIndex(e) {
-    let lastChild = e.lastChild
+    let lastChild = e.lastChild;
 
     if (lastChild === null) {
-      return 0
+      return 0;
     }
 
-    if (lastChild.nodeName === '#text') {
-      return 0
+    if (lastChild.nodeName === "#text") {
+      return 0;
     }
 
-    return lastChild.getAttribute('grabindex')
+    return lastChild.getAttribute("grabindex");
   }
 
   _dragEnd(e) {
@@ -489,9 +511,9 @@ export default class multiDragBehaviour {
     //(which implies that we have some selected items)
     if (this.selections.droptarget) {
       //append the selected items to the end of the target container
-      let startIndex = this._startIndex(this.selections.droptarget)
+      let startIndex = this._startIndex(this.selections.droptarget);
       for (let len = this.selections.items.length, i = 0; i < len; i++) {
-        this.selections.items[i].setAttribute('grabindex', ++startIndex)
+        this.selections.items[i].setAttribute("grabindex", ++startIndex);
         this.selections.droptarget.appendChild(this.selections.items[i]);
       }
       //prevent default to allow the action
@@ -509,13 +531,14 @@ export default class multiDragBehaviour {
         this._clearSelections();
 
         //reset the target's dragover class
-        this.selections.droptarget.className =
-          this.selections.droptarget.className.replace(/ dragover/g, '');
+        this.selections.droptarget.className = this.selections.droptarget.className.replace(
+          / dragover/g,
+          ""
+        );
 
         //reset the target reference
         this.selections.droptarget = null;
       }
     }
-
   }
 }
