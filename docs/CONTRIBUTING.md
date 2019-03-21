@@ -12,9 +12,9 @@ Thank you <3
 
 ## Starting point
 
-To fix bugs in the vue-multi-drag plugin logic, check **index.js** and **vue-multi-drag-behaviour.js**.
-
-TODO: own plugin creation
+To fix bugs in the vue-multi-drag plugin logic, check **index.js** and **vue-multi-drag-behaviour.js**.  
+The file _plugin.js_ contains the default options.  
+The file _main.js_ is used for the Demo
 
 ## How this vue plugin is structured
 
