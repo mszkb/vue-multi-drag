@@ -42,7 +42,7 @@ You will have to clone directly from GitHub and build `vue-multi-drag-new` yours
 you want to use the latest dev build.
 
 ```sh
-$ git clone https://github.com//vue-multi-drag-new.git node_modules/vue-multi-drag-new
+$ git clone https://github.com/mszkb/vue-multi-drag node_modules/vue-multi-drag-new
 $ cd node_modules/vue-multi-drag-new
 $ npm install
 $ npm run build
