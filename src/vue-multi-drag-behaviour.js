@@ -33,9 +33,7 @@ export default class multiDragBehaviour {
       false
     )
 
-    document.addEventListener('dragleave', function(e) {
-      this._dragLeave(e)
-    })
+    document.addEventListener('dragleave', this._dragLeave.bind(this) )
   }
 
   initItem(draggableItem) {
@@ -52,47 +50,22 @@ export default class multiDragBehaviour {
    * @param draggableItem
    */
   attachEventListeners(draggableItem) {
-    const _this = this
     // this.items.push(draggableItem)
 
-    draggableItem.addEventListener(
-      'mousedown',
-      e => {
-        _this._mouseDown(e)
-      },
-      false
-    )
-
-    draggableItem.addEventListener('mouseup', e => {
-      _this._mouseUp(e)
-    })
-
-    draggableItem.addEventListener(
-      'dragstart',
-      e => {
-        _this._dragStart(e)
-      },
-      false
-    )
-
-    draggableItem.addEventListener(
-      'dragover',
+    draggableItem.addEventListener('mousedown', this._mouseDown.bind(this))
+    draggableItem.addEventListener('mouseup', this._mouseUp.bind(this))
+    draggableItem.addEventListener('dragstart', this._dragStart.bind(this))
+    draggableItem.addEventListener('dragover',
       e => {
         //dragover event to allow the drag by preventing its default
-        if (_this.selections.items.length) {
+        if (this.selections.items.length) {
           e.preventDefault()
         }
       },
       false
     )
 
-    draggableItem.addEventListener(
-      'dragend',
-      e => {
-        _this._dragEnd(e)
-      },
-      false
-    )
+    draggableItem.addEventListener('dragend',this._dragEnd.bind(this))
   }
 
   /**
