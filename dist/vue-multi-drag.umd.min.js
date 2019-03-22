@@ -1,5 +1,5 @@
 /*!
- * vue-multi-drag v0.2.1 
+ * vue-multi-drag v0.2.3 
  * (c) 2019 mszkb
  * Released under the ISC License.
  */

@@ -2,7 +2,7 @@
   "name": "vue-multi-drag",
   "author": "mszkb",
   "license": "ISC",
-  "version": "0.2.1",
+  "version": "0.2.3",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -65,15 +65,15 @@
     "not ie <= 8"
   ],
   "files": [
-    "dist/vue-multi-drag-new.common.js",
-    "dist/vue-multi-drag-new.umd.min.js",
-    "dist/vue-multi-drag-new.umd.js",
-    "dist/vue-multi-drag-new.esm.js",
+    "dist/vue-multi-drag.common.js",
+    "dist/vue-multi-drag.umd.min.js",
+    "dist/vue-multi-drag.umd.js",
+    "dist/vue-multi-drag.esm.js",
     "src"
   ],
-  "jsdelivr": "dist/vue-multi-drag-new.umd.min.js",
-  "main": "dist/vue-multi-drag-new.common.js",
-  "module": "dist/vue-multi-drag-new.esm.js",
+  "jsdelivr": "dist/vue-multi-drag.umd.min.js",
+  "main": "dist/vue-multi-drag.common.js",
+  "module": "dist/vue-multi-drag.esm.js",
   "sideeffects": false,
-  "unpkg": "dist/vue-multi-drag-new.umd.min.js"
+  "unpkg": "dist/vue-multi-drag.umd.min.js"
 }

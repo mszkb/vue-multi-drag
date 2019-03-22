@@ -1,3 +1,9 @@
+**0.2.3**  
+Fixing package.json, the wrong files were published
+
+**0.2.2**  
+Test publish - nothing important
+
 **0.2.1**  
 Fixing 'this' bug in event listener
 
