@@ -7,12 +7,16 @@ import VueMultiDragBehaviour from './vue-multi-drag-behaviour'
 
 const Index = {}
 
+export function register (plugin) {
+
+}
+
 /**
  * Plugin API
  */
 Index.install = function(Vue, options) {
   const vmdb = new VueMultiDragBehaviour(options)
-
+  
   // Add a global asset
   Vue.directive('mz-drag', {
     bind(el) {

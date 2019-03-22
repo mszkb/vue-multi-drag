@@ -1,6 +1,6 @@
 /*
- * NOTE:
- *   This file is plugin stub for main.js
+ * This file is only for developers to test options and
+ * implement new plugins for this plugin
  */
 
 import Vue from 'vue'
@@ -10,6 +10,7 @@ const options = {
   invert: true,
   selectAll: true,
   itemCheckbox: true,
+  
   // Dragging callbacks
   callbackBeforeDragStart: () => {
     console.log('I get called on before dragstart')
@@ -56,6 +57,12 @@ const options = {
   }
 }
 
+class plugin1 {
+  constructor() {
+  }
+}
+
+plugin.register(plugin1)
 Vue.use(plugin, options)
 
 /*
