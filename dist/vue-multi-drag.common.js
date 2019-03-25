@@ -1,9 +1,11 @@
 /*!
- * vue-multi-drag v0.3.0 
+ * vue-multi-drag v0.3.1 
  * (c) 2019 mszkb
  * Released under the ISC License.
  */
 'use strict';
+
+Object.defineProperty(exports, '__esModule', { value: true });
 
 function _classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
@@ -441,7 +443,13 @@ function () {
       //but we have to use this incorrect syntax for the benefit of IE10+
 
 
-      e.dataTransfer.setData('text', ''); //apply dropeffect to the target containers
+      e.dataTransfer.setData('text', '');
+      var dragIcon = document.createElement('img');
+      dragIcon.src = 'assets/long-arrow-alt-right-solid.svg';
+      dragIcon.width = 100;
+      document.body.appendChild(dragIcon);
+      e.dataTransfer.setDragImage(dragIcon, -10, 10);
+      console.log(e); //apply dropeffect to the target containers
 
       this._addDropeffects();
     }
@@ -646,6 +654,7 @@ function () {
  */
 
 var Index = {};
+function register(plugin) {}
 /**
  * Plugin API
  */
@@ -714,4 +723,5 @@ Index.install = function (Vue) {
   };
 };
 
-module.exports = Index;
+exports.default = Index;
+exports.register = register;
