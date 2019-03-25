@@ -1,3 +1,9 @@
+**0.3.1**
+(dev) copying main.js from demo, otherwise dev server won't start
+
+**0.3.0**
+adding options object, adding before and after callbacks for events
+
 **0.2.3**  
 Fixing package.json, the wrong files were published
 
