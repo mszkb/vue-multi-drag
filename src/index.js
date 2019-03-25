@@ -14,9 +14,31 @@ export function register (plugin) {
 /**
  * Plugin API
  */
-Index.install = function(Vue, options) {
-  const vmdb = new VueMultiDragBehaviour(options)
-  
+Index.install = function(Vue, options = {}) {
+  const defaultOptions = {
+    invert: true,           // TODO not implemented
+    selectAll: true,        // TODO not implemented
+    itemCheckbox: true,     // TODO not implemented
+    // Dragging callbacks
+    callbackBeforeDragStart: () => { },
+    callbackAfterDragStart: () => { },
+    callbackBeforeDragOver: () => { },
+    callbackAfterDragOver: () => { },
+    callbackBeforeDragend: () => { },
+    callbackAfterDragend: () => { },
+    callbackBeforeDragenter: () => { },
+    callbackAfterDragenter: () => { },
+    callbackBeforeDragleave: () => { },
+    callbackAfterDragleave: () => { },
+    // Mouse callbacks
+    callbackBeforeMouseup: () => { },
+    callbackAfterMouseup: () => { },
+    callbackBeforeMousdown: () => { },
+    callbackAfterMousdown: () => { },
+  }
+  const finalOptions = {...defaultOptions, ...options}
+  const vmdb = new VueMultiDragBehaviour(finalOptions)
+
   // Add a global asset
   Vue.directive('mz-drag', {
     bind(el) {
