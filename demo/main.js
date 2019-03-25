@@ -2,26 +2,27 @@ import Vue from 'vue'
 import App from './App'
 import plugin from '../src'
 
+
 const options = {
-  invert: true,
-  selectAll: true,
-  itemCheckbox: true,
+  invert: true,           // TODO not implemented
+  selectAll: true,        // TODO not implemented
+  itemCheckbox: true,     // TODO not implemented
   // Dragging callbacks
-  callbackBeforeDragStart: () => { console.log('I get called on before dragstart')},
-  callbackAfterDragStart: () => { console.log('I get called on after dragstart')},
-  callbackBeforeDragOver: () => { console.log('I get called before dragging over')},
-  callbackAfterDragOver: () => { console.log('I get called after dragging over')},
-  callbackBeforeDragend: () => { console.log('I get called before dragend')},
-  callbackAfterDragend: () => { console.log('I get called after dragend')},
-  callbackBeforeDragenter: () => { console.log('I get called before dragenter')},
-  callbackAfterDragenter: () => { console.log('I get called after dragenter')},
-  callbackBeforeDragleave: () => { console.log('I get called before dragleave')},
-  callbackAfterDragleave: () => { console.log('I get called after dragleave')},
+  callbackBeforeDragStart: (e, instance) => { console.log('BEFORE DRAG START'); },
+  callbackAfterDragStart: (e, instance) => { console.log('AFTER DRAG START') },
+  callbackBeforeDragOver: (e, instance) => { console.log('BEFORE DRAG OVER') },
+  callbackAfterDragOver: (e, instance) => { console.log('AFTER DRAG OVER') },
+  callbackBeforeDragend: (e, instance) => { console.log('BEFORE DRAG END') },
+  callbackAfterDragend: (e, instance) => { console.log('AFTER DRAG END') },
+  callbackBeforeDragenter: (e, instance) => { console.log('BEFORE DRAG ENTER') },
+  callbackAfterDragenter: (e, instance) => { console.log('AFTER DRAG ENTER') },
+  callbackBeforeDragleave: (e, instance) => { console.log('BEFORE DRAG LEAVE') },
+  callbackAfterDragleave: (e, instance) => { console.log('AFTER DRAG LEAVE') },
   // Mouse callbacks
-  callbackBeforeMouseup: () => { console.log('I get called before mouseup')},
-  callbackAfterMouseup: () => { console.log('I get called after mouseup')},
-  callbackBeforeMousdown: () => { console.log('I get called before mousedown')},
-  callbackAfterMousdown: () => { console.log('I get called after mousedown')},
+  callbackBeforeMouseup: (e, instance) => { console.log('BEFORE MOUSE UP') },
+  callbackAfterMouseup: (e, instance) => { console.log('AFTER MOUSE UP') },
+  callbackBeforeMousdown: (e, instance) => { console.log('BEFORE MOUSE DOWN') },
+  callbackAfterMousdown: (e, instance) => { console.log('AFTER MOUSE DOWN') },
 }
 
 Vue.use(plugin, options)

@@ -36,6 +36,39 @@ Vue.use(vue-multi-drag-new)
 
 You don't need to do this when using global script tags.
 
+## Available options
+
+All of the callbacks have arguments of the affected item and the instance of the plugin
+
+````javascript
+import Vue from 'vue'
+import vue-multi-drag-new from 'vue-multi-drag-new'
+
+const options = {
+  invert: true,           // TODO not implemented
+  selectAll: true,        // TODO not implemented
+  itemCheckbox: true,     // TODO not implemented
+  // Dragging callbacks
+  callbackBeforeDragStart: (e, instance) => { /* Do something */ },
+  callbackAfterDragStart: (e, instance) => { /* Do something */ },
+  callbackBeforeDragOver: (e, instance) => { /* Do something */ },
+  callbackAfterDragOver: (e, instance) => { /* Do something */ },
+  callbackBeforeDragend: (e, instance) => { /* Do something */ },
+  callbackAfterDragend: (e, instance) => { /* Do something */ },
+  callbackBeforeDragenter: (e, instance) => { /* Do something */ },
+  callbackAfterDragenter: (e, instance) => { /* Do something */ },
+  callbackBeforeDragleave: (e, instance) => { /* Do something */ },
+  callbackAfterDragleave: (e, instance) => { /* Do something */ },
+  // Mouse callbacks
+  callbackBeforeMouseup: (e, instance) => { /* Do something */ },
+  callbackAfterMouseup: (e, instance) => { /* Do something */ },
+  callbackBeforeMousdown: (e, instance) => { /* Do something */ },
+  callbackAfterMousdown: (e, instance) => { /* Do something */ },
+}
+Vue.use(vue-multi-drag-new)
+````
+
+
 ## Dev Build
 
 You will have to clone directly from GitHub and build `vue-multi-drag-new` yourself if

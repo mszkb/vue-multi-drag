@@ -31,6 +31,40 @@
     return Constructor;
   }
 
+  function _defineProperty(obj, key, value) {
+    if (key in obj) {
+      Object.defineProperty(obj, key, {
+        value: value,
+        enumerable: true,
+        configurable: true,
+        writable: true
+      });
+    } else {
+      obj[key] = value;
+    }
+
+    return obj;
+  }
+
+  function _objectSpread(target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i] != null ? arguments[i] : {};
+      var ownKeys = Object.keys(source);
+
+      if (typeof Object.getOwnPropertySymbols === 'function') {
+        ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {
+          return Object.getOwnPropertyDescriptor(source, sym).enumerable;
+        }));
+      }
+
+      ownKeys.forEach(function (key) {
+        _defineProperty(target, key, source[key]);
+      });
+    }
+
+    return target;
+  }
+
   // Took the algorithm and all the logic from
   // https://www.sitepoint.com/accessible-drag-drop/
   // https://codepen.io/SitePoint/pen/XJPjOj
@@ -67,8 +101,16 @@
           _this.options.callbackBeforeDragenter();
 
           _this.related = e.target;
-        }, false);
-        document.addEventListener('dragleave', this._dragLeave.bind(this));
+
+          _this.options.callbackAfterDragenter();
+        });
+        document.addEventListener('dragleave', function (e) {
+          _this.options.callbackBeforeDragleave();
+
+          _this._dragLeave(e);
+
+          _this.options.callbackAfterDragleave();
+        });
       }
     }, {
       key: "initItem",
@@ -92,16 +134,44 @@
         var _this2 = this;
 
         // this.items.push(draggableItem)
-        draggableItem.addEventListener('mousedown', this._mouseDown.bind(this));
-        draggableItem.addEventListener('mouseup', this._mouseUp.bind(this));
-        draggableItem.addEventListener('dragstart', this._dragStart.bind(this));
+        draggableItem.addEventListener('mousedown', function (e) {
+          _this2.options.callbackBeforeMousdown();
+
+          _this2._mouseDown(e);
+
+          _this2.options.callbackAfterMousdown();
+        });
+        draggableItem.addEventListener('mouseup', function (e) {
+          _this2.options.callbackBeforeMouseup();
+
+          _this2._mouseUp(e);
+
+          _this2.options.callbackAfterMouseup();
+        });
+        draggableItem.addEventListener('dragstart', function (e) {
+          _this2.options.callbackBeforeDragStart();
+
+          _this2._dragStart(e);
+
+          _this2.options.callbackAfterDragStart();
+        });
         draggableItem.addEventListener('dragover', function (e) {
-          //dragover event to allow the drag by preventing its default
+          _this2.options.callbackBeforeDragOver(); //dragover event to allow the drag by preventing its default
+
+
           if (_this2.selections.items.length) {
             e.preventDefault();
           }
-        }, false);
-        draggableItem.addEventListener('dragend', this._dragEnd.bind(this));
+
+          _this2.options.callbackAfterDragOver();
+        });
+        draggableItem.addEventListener('dragend', function (e) {
+          _this2.options.callbackBeforeDragend();
+
+          _this2._dragEnd(e);
+
+          _this2.options.callbackAfterDragend();
+        });
       }
       /**
        * Adds the current selection to the list and adds the 'aria-grabbed' attribute
@@ -584,8 +654,36 @@
    * Plugin API
    */
 
-  Index.install = function (Vue, options) {
-    var vmdb = new multiDragBehaviour(options); // Add a global asset
+  Index.install = function (Vue) {
+    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    var defaultOptions = {
+      invert: true,
+      // TODO not implemented
+      selectAll: true,
+      // TODO not implemented
+      itemCheckbox: true,
+      // TODO not implemented
+      // Dragging callbacks
+      callbackBeforeDragStart: function callbackBeforeDragStart() {},
+      callbackAfterDragStart: function callbackAfterDragStart() {},
+      callbackBeforeDragOver: function callbackBeforeDragOver() {},
+      callbackAfterDragOver: function callbackAfterDragOver() {},
+      callbackBeforeDragend: function callbackBeforeDragend() {},
+      callbackAfterDragend: function callbackAfterDragend() {},
+      callbackBeforeDragenter: function callbackBeforeDragenter() {},
+      callbackAfterDragenter: function callbackAfterDragenter() {},
+      callbackBeforeDragleave: function callbackBeforeDragleave() {},
+      callbackAfterDragleave: function callbackAfterDragleave() {},
+      // Mouse callbacks
+      callbackBeforeMouseup: function callbackBeforeMouseup() {},
+      callbackAfterMouseup: function callbackAfterMouseup() {},
+      callbackBeforeMousdown: function callbackBeforeMousdown() {},
+      callbackAfterMousdown: function callbackAfterMousdown() {}
+    };
+
+    var finalOptions = _objectSpread({}, defaultOptions, options);
+
+    var vmdb = new multiDragBehaviour(finalOptions); // Add a global asset
 
     Vue.directive('mz-drag', {
       bind: function bind(el) {
