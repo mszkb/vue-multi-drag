@@ -1,5 +1,5 @@
 /*!
- * vue-multi-drag v0.2.3 
+ * vue-multi-drag v0.3.0 
  * (c) 2019 mszkb
  * Released under the ISC License.
  */
@@ -98,18 +98,18 @@
         var _this = this;
 
         document.addEventListener('dragenter', function (e) {
-          _this.options.callbackBeforeDragenter();
+          _this.options.callbackBeforeDragenter(e, _this);
 
           _this.related = e.target;
 
-          _this.options.callbackAfterDragenter();
+          _this.options.callbackAfterDragenter(e, _this);
         });
         document.addEventListener('dragleave', function (e) {
-          _this.options.callbackBeforeDragleave();
+          _this.options.callbackBeforeDragleave(e, _this);
 
           _this._dragLeave(e);
 
-          _this.options.callbackAfterDragleave();
+          _this.options.callbackAfterDragleave(e, _this);
         });
       }
     }, {
@@ -135,42 +135,42 @@
 
         // this.items.push(draggableItem)
         draggableItem.addEventListener('mousedown', function (e) {
-          _this2.options.callbackBeforeMousdown();
+          _this2.options.callbackBeforeMousdown(e, _this2);
 
           _this2._mouseDown(e);
 
-          _this2.options.callbackAfterMousdown();
+          _this2.options.callbackAfterMousdown(e, _this2);
         });
         draggableItem.addEventListener('mouseup', function (e) {
-          _this2.options.callbackBeforeMouseup();
+          _this2.options.callbackBeforeMouseup(e, _this2);
 
           _this2._mouseUp(e);
 
-          _this2.options.callbackAfterMouseup();
+          _this2.options.callbackAfterMouseup(e, _this2);
         });
         draggableItem.addEventListener('dragstart', function (e) {
-          _this2.options.callbackBeforeDragStart();
+          _this2.options.callbackBeforeDragStart(e, _this2);
 
           _this2._dragStart(e);
 
-          _this2.options.callbackAfterDragStart();
+          _this2.options.callbackAfterDragStart(e, _this2);
         });
         draggableItem.addEventListener('dragover', function (e) {
-          _this2.options.callbackBeforeDragOver(); //dragover event to allow the drag by preventing its default
+          _this2.options.callbackBeforeDragOver(e, _this2); //dragover event to allow the drag by preventing its default
 
 
           if (_this2.selections.items.length) {
             e.preventDefault();
           }
 
-          _this2.options.callbackAfterDragOver();
+          _this2.options.callbackAfterDragOver(e, _this2);
         });
         draggableItem.addEventListener('dragend', function (e) {
-          _this2.options.callbackBeforeDragend();
+          _this2.options.callbackBeforeDragend(e, _this2);
 
           _this2._dragEnd(e);
 
-          _this2.options.callbackAfterDragend();
+          _this2.options.callbackAfterDragend(e, _this2);
         });
       }
       /**
