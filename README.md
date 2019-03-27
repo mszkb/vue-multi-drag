@@ -35,7 +35,7 @@ YourComponent.vue
         @dragexit="method3"
         @dragleave="method4"
         @dragover="method5"
-        @dragstart="method 6">Element 1</li>
+        @dragstart="method6">Element 1</li>
         <li v-mz-drag>Element 2</li>
         <li v-mz-drag>Element 3</li>
         <li v-mz-drag>Element 4</li>

@@ -1,13 +1,13 @@
 /*!
- * vue-multi-drag v0.3.0 
+ * vue-multi-drag v0.3.2 
  * (c) 2019 mszkb
  * Released under the ISC License.
  */
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-  typeof define === 'function' && define.amd ? define(factory) :
-  (global = global || self, global.VueMultiDrag = factory());
-}(this, function () { 'use strict';
+  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+  typeof define === 'function' && define.amd ? define(['exports'], factory) :
+  (global = global || self, factory(global.VueMultiDrag = {}));
+}(this, function (exports) { 'use strict';
 
   function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
@@ -114,12 +114,12 @@
       }
     }, {
       key: "initItem",
-      value: function initItem(draggableItem) {
+      value: function initItem(draggableItem, vnode) {
         draggableItem.setAttribute('grabindex', this.allItems.length); // this attribute keeps track of the position
         // so it is not affected by the order of selection
 
         this.allItems.push(draggableItem);
-        this.attachEventListeners(draggableItem);
+        this.attachEventListeners(draggableItem, vnode);
       }
       /**
        * Attach an eventlistener to given draggableItem and
@@ -130,7 +130,7 @@
 
     }, {
       key: "attachEventListeners",
-      value: function attachEventListeners(draggableItem) {
+      value: function attachEventListeners(draggableItem, vnode) {
         var _this2 = this;
 
         // this.items.push(draggableItem)
@@ -139,6 +139,8 @@
 
           _this2._mouseDown(e);
 
+          vnode.context.$emit('mousedown');
+
           _this2.options.callbackAfterMousdown(e, _this2);
         });
         draggableItem.addEventListener('mouseup', function (e) {
@@ -146,12 +148,16 @@
 
           _this2._mouseUp(e);
 
+          vnode.context.$emit('mouseup');
+
           _this2.options.callbackAfterMouseup(e, _this2);
         });
         draggableItem.addEventListener('dragstart', function (e) {
           _this2.options.callbackBeforeDragStart(e, _this2);
 
           _this2._dragStart(e);
+
+          vnode.context.$emit('dragstart');
 
           _this2.options.callbackAfterDragStart(e, _this2);
         });
@@ -163,12 +169,16 @@
             e.preventDefault();
           }
 
+          vnode.context.$emit('dragover');
+
           _this2.options.callbackAfterDragOver(e, _this2);
         });
         draggableItem.addEventListener('dragend', function (e) {
           _this2.options.callbackBeforeDragend(e, _this2);
 
           _this2._dragEnd(e);
+
+          vnode.context.$emit('dragend');
 
           _this2.options.callbackAfterDragend(e, _this2);
         });
@@ -650,6 +660,7 @@
    */
 
   var Index = {};
+  function register(plugin) {}
   /**
    * Plugin API
    */
@@ -686,7 +697,7 @@
     var vmdb = new multiDragBehaviour(finalOptions); // Add a global asset
 
     Vue.directive('mz-drag', {
-      bind: function bind(el) {
+      bind: function bind(el, binding, vnode) {
         // something logic ...
         el.setAttribute('draggable', 'true'); // enable html5 drag API
 
@@ -696,7 +707,7 @@
         el.setAttribute('grabindex', '0'); // sort the items after index
         // the index resets when the item moves to other column
 
-        vmdb.initItem(el);
+        vmdb.initItem(el, vnode);
       },
       unbind: function unbind(el) {
         el.removeEventListener();
@@ -718,6 +729,9 @@
     };
   };
 
-  return Index;
+  exports.default = Index;
+  exports.register = register;
+
+  Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
