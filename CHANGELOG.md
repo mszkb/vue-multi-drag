@@ -1,3 +1,6 @@
+**0.3.2**
+vue emits implemented
+
 **0.3.1**
 (dev) copying main.js from demo, otherwise dev server won't start
 

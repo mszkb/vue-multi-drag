@@ -2,11 +2,11 @@
   <div class="vue-multi-drag-demo">
     <div class="col col-3">
       <ul v-mz-dropzone>
-        <li v-mz-drag>ABC 123</li>
-        <li v-mz-drag>ABC 345</li>
-        <li v-mz-drag>ABC 678</li>
-        <li v-mz-drag>ABC 999</li>
-        <li v-mz-drag>XYZ 195</li>
+        <li v-mz-drag @dragend="test">ABC 123</li>
+        <li v-mz-drag @dragend="test">ABC 345</li>
+        <li v-mz-drag @dragend="test">ABC 678</li>
+        <li v-mz-drag @dragend="test">ABC 999</li>
+        <li v-mz-drag @dragend="test">XYZ 195</li>
       </ul>
     </div>
     <div class="col col-3">
@@ -27,6 +27,11 @@ export default {
   data() {
     return {
       msg: 'generator-vue-plugin'
+    }
+  },
+  methods: {
+    test(ev) {
+      console.log(ev)
     }
   }
 }

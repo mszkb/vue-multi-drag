@@ -29,7 +29,13 @@ YourComponent.vue
   <div class="template-class">
     <div class="col col-3">
       <ul v-mz-dropzone>
-        <li v-mz-drag>Element 1</li>
+        <li v-mz-drag 
+        @dragend="method"
+        @dragenter="method2"
+        @dragexit="method3"
+        @dragleave="method4"
+        @dragover="method5"
+        @dragstart="method 6">Element 1</li>
         <li v-mz-drag>Element 2</li>
         <li v-mz-drag>Element 3</li>
         <li v-mz-drag>Element 4</li>

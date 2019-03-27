@@ -37,11 +37,11 @@ export default class multiDragBehaviour {
     })
   }
 
-  initItem (draggableItem) {
+  initItem (draggableItem, vnode) {
     draggableItem.setAttribute('grabindex', this.allItems.length) // this attribute keeps track of the position
     // so it is not affected by the order of selection
     this.allItems.push(draggableItem)
-    this.attachEventListeners(draggableItem)
+    this.attachEventListeners(draggableItem, vnode)
   }
 
   /**
@@ -50,22 +50,25 @@ export default class multiDragBehaviour {
    *
    * @param draggableItem
    */
-  attachEventListeners (draggableItem) {
+  attachEventListeners (draggableItem, vnode) {
     // this.items.push(draggableItem)
 
     draggableItem.addEventListener('mousedown', (e) => {
       this.options.callbackBeforeMousdown(e, this)
       this._mouseDown(e)
+      vnode.context.$emit('mousedown')
       this.options.callbackAfterMousdown(e, this)
     })
     draggableItem.addEventListener('mouseup', (e) => {
       this.options.callbackBeforeMouseup(e, this)
       this._mouseUp(e)
+      vnode.context.$emit('mouseup')
       this.options.callbackAfterMouseup(e, this)
     })
     draggableItem.addEventListener('dragstart', (e) => {
       this.options.callbackBeforeDragStart(e, this)
       this._dragStart(e)
+      vnode.context.$emit('dragstart')
       this.options.callbackAfterDragStart(e, this)
     })
     draggableItem.addEventListener('dragover', (e) => {
@@ -74,12 +77,14 @@ export default class multiDragBehaviour {
       if (this.selections.items.length) {
         e.preventDefault()
       }
+      vnode.context.$emit('dragover')
       this.options.callbackAfterDragOver(e, this)
     })
 
     draggableItem.addEventListener('dragend', (e) => {
       this.options.callbackBeforeDragend(e, this)
       this._dragEnd(e)
+      vnode.context.$emit('dragend')
       this.options.callbackAfterDragend(e, this)
     })
   }

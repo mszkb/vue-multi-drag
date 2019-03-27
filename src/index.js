@@ -41,14 +41,14 @@ Index.install = function(Vue, options = {}) {
 
   // Add a global asset
   Vue.directive('mz-drag', {
-    bind(el) {
+    bind(el, binding, vnode) {
       // something logic ...
       el.setAttribute('draggable', 'true') // enable html5 drag API
       el.setAttribute('aria-grabbed', 'false')
       el.setAttribute('tabindex', '0') // for tab-key
       el.setAttribute('grabindex', '0') // sort the items after index
       // the index resets when the item moves to other column
-      vmdb.initItem(el)
+      vmdb.initItem(el, vnode)
     },
     unbind(el) {
       el.removeEventListener()
