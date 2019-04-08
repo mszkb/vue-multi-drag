@@ -15,6 +15,10 @@ export function register (plugin) {
  * Plugin API
  */
 Index.install = function(Vue, options = {}) {
+
+  const ghostImg = ""
+
+
   const defaultOptions = {
     invert: true,           // TODO not implemented
     selectAll: true,        // TODO not implemented

@@ -81,6 +81,10 @@ export default class multiDragBehaviour {
       this.options.callbackAfterDragOver(e, this)
     })
 
+    draggableItem.addEventListener('drag', (e) => {
+      this._moveDragImage(e)
+    })
+
     draggableItem.addEventListener('dragend', (e) => {
       this.options.callbackBeforeDragend(e, this)
       this._dragEnd(e)
@@ -279,6 +283,7 @@ export default class multiDragBehaviour {
       this._clearDropeffects() // clear dropeffect from the target containers
       this._clearSelections() // clear all existing selections
     }
+    this._setDragImage(e)
   }
 
   /**
@@ -289,6 +294,7 @@ export default class multiDragBehaviour {
    * @private
    */
   _mouseUp (e) {
+    document.onmousemove = null
     if (!this._hasModifier(e)) {
       if (e.target.getAttribute('draggable')) {
         // check if the item's grabbed state is currently false
@@ -347,9 +353,63 @@ export default class multiDragBehaviour {
     //most browsers support the proper mime-type syntax, eg. "text/plain"
     //but we have to use this incorrect syntax for the benefit of IE10+
     e.dataTransfer.setData('text', '')
+    // this._setDragImageNative(e)
+    this._setDragImage(e)
 
     //apply dropeffect to the target containers
     this._addDropeffects()
+  }
+
+  _setDragImage(e) {
+    let dragIcon = document.createElement('div')
+    let counter = this.selections.items.length
+    dragIcon.setAttribute('id', 'msz-dragImg')
+    dragIcon.setAttribute('style', 'width: 80px; height: 30px; display: inline-block; transform:translate3d(-50%,-50%,0);')
+    dragIcon.innerHTML += `<div style="margin-left: 10px; height: 20px; opacity: 1; position: absolute">
+      <div style="width: 20px; height: 20px; display: inline-block;"><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="long-arrow-alt-right"
+           class="svg-inline--fa fa-long-arrow-alt-right fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg"
+           viewBox="0 0 448 512">
+        <path fill="currentColor"
+              d="M313.941 216H12c-6.627 0-12 5.373-12 12v56c0 6.627 5.373 12 12 12h301.941v46.059c0 21.382 25.851 32.09 40.971 16.971l86.059-86.059c9.373-9.373 9.373-24.569 0-33.941l-86.059-86.059c-15.119-15.119-40.971-4.411-40.971 16.971V216z"></path>
+      </svg></div> 
+      <span style="font-size: 12px; position: absolute; top: 5px; left: 25px">Move <span style="color: red">${counter}</span> to X</span> 
+      </div>`
+    document.body.appendChild(dragIcon)
+
+    let hideDragImage = e.currentTarget.cloneNode()
+    hideDragImage.style.display = "none"
+    e.dataTransfer.setDragImage(hideDragImage, 0, 0)
+  }
+
+  _moveDragImage(e) {
+    console.log('test')
+    let x = e.clientX
+    let y = e.clientY
+    let newposX = x - 60
+    let newposY = y - 60
+    document.getElementById('msz-dragImg').style.transform = `translate3d(${newposX}px, ${newposY}px, 0px)`
+  }
+  /**
+   * @deprecated native is broken and bad, and there is no way to set opacity
+   * @param e
+   * @private
+   */
+  _setDragImageNative(e) {
+    let dragIcon = document.createElement('div')
+    let counter = this.selections.items.length
+    dragIcon.setAttribute('id', 'msz-dragImg')
+    dragIcon.setAttribute('style', 'widht: 80px; height: 30px')
+    dragIcon.innerHTML += `<div style="margin-left: 10px; height: 20px; opacity: 1; position: absolute">
+      <div style="width: 20px; height: 20px; display: inline-block;"><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="long-arrow-alt-right"
+           class="svg-inline--fa fa-long-arrow-alt-right fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg"
+           viewBox="0 0 448 512">
+        <path fill="currentColor"
+              d="M313.941 216H12c-6.627 0-12 5.373-12 12v56c0 6.627 5.373 12 12 12h301.941v46.059c0 21.382 25.851 32.09 40.971 16.971l86.059-86.059c9.373-9.373 9.373-24.569 0-33.941l-86.059-86.059c-15.119-15.119-40.971-4.411-40.971 16.971V216z"></path>
+      </svg></div> 
+      <span style="font-size: 12px; position: absolute; top: 5px; left: 25px">Move <span style="color: red">${counter}</span> to X</span> 
+      </div>`
+    document.body.appendChild(dragIcon)
+    e.dataTransfer.setDragImage(dragIcon, 0, 0)
   }
 
   _keyDown (e) {
@@ -502,6 +562,7 @@ export default class multiDragBehaviour {
   }
 
   _dragEnd (e) {
+    // document.getElementById('msz-dragImg').remove()
     //if we have a valid drop target reference
     //(which implies that we have some selected items)
     if (this.selections.droptarget) {
